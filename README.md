@@ -18,7 +18,7 @@ If you do not have matplotlib etc. do
 
 Clone this repo using git
 
-    git clone
+    git clone https://github.com/duerrsimon/substrate-scope-plot.git
 
 Then fire up a jupyter-notebook from the terminal like so
 
