@@ -39,7 +39,7 @@ Then fire up a jupyter-notebook from the terminal like so
     jupyter-notebook radial_scope_plot.ipynb
     
 ### How does it look like
-![radial scope plot example](https://raw.githubusercontent.com/duerrsimon/substrate-scope-plot/master/substrate_scope_replaced.svg "radial scope plot example")
+![radial scope plot example](https://raw.githubusercontent.com/duerrsimon/substrate-scope-plot/master/substrate_scope_replaced.svg?sanitize=true "radial scope plot example")
 
 
 #### Changelog 
