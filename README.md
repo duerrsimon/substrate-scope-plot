@@ -1,6 +1,9 @@
 # Radial Scope plot 
 ### The matplotlib/rdkit version
 
+[![DOI](https://zenodo.org/badge/228660126.svg)](https://zenodo.org/badge/latestdoi/228660126)
+If you want to cite this code (you do not have to), use the DOI.
+
 #### Orginal idea
 This figure made its rounds on twitter based on this tweet https://twitter.com/NarayanLab/status/1206652692321292288
 
