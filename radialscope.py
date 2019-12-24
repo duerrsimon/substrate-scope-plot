@@ -26,9 +26,9 @@ from rdkit import Geometry
 
 
 def draw_with_indeces(settings):
-	"""
-	Drawing function that displays the input smiles string with all atom indeces
-	"""
+    """
+    Drawing function that displays the input smiles string with all atom indeces
+    """
     m = Chem.MolFromSmiles(settings['SMILESSTRING'])
     dm = Draw.PrepareMolForDrawing(m)
     d2d = Draw.MolDraw2DSVG(350,350)
@@ -214,7 +214,7 @@ class RadialScope(object):
         mol_svg, d2d, dm=self.draw_smiles()
         replace_index=[]
         for scope_plot in self.plots:
-        	# for each scope plot, make a vals list containing empty first items for the wedge with alpha=0
+            # for each scope plot, make a vals list containing empty first items for the wedge with alpha=0
             if type(scope_plot)!=dict:
                 continue
             
