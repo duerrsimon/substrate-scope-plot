@@ -66,6 +66,7 @@ class RadialScope(object):
         """
         self.settings=settings_dict
         self.plots=[]
+        self.cbar_index=0 # if you want to use multiple colorbars you need to uncomment two lines below in the plot_figure_and_colorbar function at the bottom of the functuon
         for plot in args:
             self.plots.append(plot)
         if len(args)<1:
@@ -148,12 +149,19 @@ class RadialScope(object):
         _=ax.set(aspect="equal")
         circle1 = plt.Circle((0, 0), 0.15, color='w', ls='-', ec='k', lw=1.4, zorder=99, gid='circle_anchor')
         label = ax.annotate(radial_scope_setup['rest_label'], xy=(0, 0), fontsize=30, ha="center", va='center', zorder=100, gid='circle_content')
+        
+        if len(radial_scope_setup['min_max_value'])==2:
+            min_cbar_value=[radial_scope_setup['min_max_value'][0][0],radial_scope_setup['min_max_value'][0][1]]
+            max_cbar_value=[radial_scope_setup['min_max_value'][1][0],radial_scope_setup['min_max_value'][1][1]]
+        else: 
+            min_cbar_value=[np.min(vals[1]),np.min(vals[2])]
+            max_cbar_value=[np.max(vals[1]),np.max(vals[2])]
 
         cmap_inner = plt.get_cmap(radial_scope_setup['CMAPINNER'])
         cmap_outer = plt.get_cmap(radial_scope_setup['CMAPOUTER'])
-        norm_outer = plt.Normalize(np.min(vals[2]), np.max([vals[2]]))
+        norm_outer = plt.Normalize(min_cbar_value[1], max_cbar_value[1])
         outer_colors = cmap_outer(norm_outer(vals[2]))
-        norm_inner = plt.Normalize(np.min(vals[1]), np.max([vals[1]]))
+        norm_inner = plt.Normalize(min_cbar_value[0], max_cbar_value[0])
         inner_colors = cmap_inner(norm_inner(vals[1]))
 
         labels_circle=ax.pie(vals[0], startangle=radial_scope_setup['startangle'], radius=0.7, colors=['w']*len(vals[0]), labels=vals[5], labeldistance=1.1,
@@ -187,20 +195,22 @@ class RadialScope(object):
         _=plt.close(fig)
         # close first figure as we do not want to display it and start assembling the colorbar
         
-
+        # currently only the first colorbar is used. If you need to print multiple colorbars uncomment line below
         fig, axs = plt.subplots(2, figsize=(3,2))
-        sm = ScalarMappable(cmap=cmap_inner, norm=plt.Normalize(0,max(vals[1])))
+        sm = ScalarMappable(cmap=cmap_inner, norm=plt.Normalize(min_cbar_value[0],max_cbar_value[0]))
         _=sm.set_array([])
-        cbar = plt.colorbar(sm,cax=axs[0], orientation="horizontal",ticks=[0,50,99])
-        _=cbar.ax.set_xticklabels(['0', '50', '100 %']) 
+        cbar = plt.colorbar(sm,cax=axs[0], orientation="horizontal",ticks=[min_cbar_value[0], max_cbar_value[0]/2, max_cbar_value[0]])
+        _=cbar.ax.set_xticklabels([str(min_cbar_value[0]), str(int(max_cbar_value[0]/2)), str(max_cbar_value[0])]) 
         _=cbar.set_label(radial_scope_setup['INNERLABEL'],weight='bold', fontsize=12)
-        sm1 = ScalarMappable(cmap=cmap_outer, norm=plt.Normalize(0,max(vals[1])))
+        sm1 = ScalarMappable(cmap=cmap_outer, norm=plt.Normalize(min_cbar_value[1],max_cbar_value[1]))
         _=sm1.set_array([])
-        cbar1 = plt.colorbar(sm1,cax=axs[1], orientation="horizontal",ticks=[0,50,99])
-        _=cbar1.ax.set_xticklabels(['0', '50', '100 %']) 
+        cbar1 = plt.colorbar(sm1,cax=axs[1], orientation="horizontal",ticks=[min_cbar_value[1], max_cbar_value[1]/2, max_cbar_value[1]])
+        _=cbar1.ax.set_xticklabels([str(min_cbar_value[1]), str(int(max_cbar_value[1]/2)), str(max_cbar_value[1])]) 
         _=cbar1.set_label(radial_scope_setup['OUTERLABEL'],weight='bold',fontsize=12)
         figure2=fig.tight_layout()
         sio2 = StringIO()
+        #_=fig.savefig('colorbar'+self.cbar_index+'.svg', transparent=True, format='SVG')
+        # self.cbar_index+=1
         _=fig.savefig(sio2, transparent=True, format='SVG')
         colorbars = sio2.getvalue()
         _=plt.close(fig)
