@@ -52,6 +52,10 @@ Then fire up a jupyter-notebook from the terminal like so
 
 
 #### Changelog 
+v0.4 | 7.1.2020
+
+- add environment.yml and mybinder links
+
 v0.3 | 30.12.2019
 
 - bug fixes to the colorbar and addition of min_max_value for colorbar
