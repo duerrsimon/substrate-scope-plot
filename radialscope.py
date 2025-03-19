@@ -112,7 +112,7 @@ class RadialScope(object):
         # scale smiles molecule and remove clutter
         group1 = d2d.GetDrawingText()
         replace_str=group1[group1.find('<!-- END OF HEADER -->')+len("<!-- END OF HEADER -->")+1:-8]
-        replace_str='<g transform="translate(-300,-300)scale(6)">'+replace_str+"</g>"
+        replace_str='<g transform="translate(-300,300)scale(6,-6)">'+replace_str+"</g>"
         # find the index in the pie chart that needs to be replaced, we will geplace the two glyphs with the svg text from rdkit
         index_of_comment=svg_file.find(str(search_index))
         index_of_defsend=svg_file[index_of_comment:].find('</defs>')
@@ -251,12 +251,14 @@ class RadialScope(object):
                 else:
                     label_inner_circle[i+1]=str(value_inner_circle[i])
                     label_outer_circle[i+1]=str(value_outer_circle[i])
-            j=0
-            for i,item in enumerate(value_groups):
-                if item[0]=='~':
-                    replace_index.append(('~'+str(j),item[1:]))
-                    value_groups[i]='~'+str(j)
-                    j=j+1
+                    
+            # Add an offset for unique indices based on plot order
+            offset = len(replace_index)  # Start new indices after existing ones
+            for i, item in enumerate(value_groups):
+                if item[0] == '~':
+                    replace_index.append(('~' + str(offset), item[1:]))
+                    value_groups[i] = '~' + str(offset)
+                    offset += 1
 
             vals = [sizes, # size of the wedges, the first wedge is transparent and will not be shown 
                     [0]+value_inner_circle, # colormap values for the inner circle, maximum value determines intensity, first is for the transparent wedge and should stay 0
